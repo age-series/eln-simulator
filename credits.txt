@@ -1,0 +1,16 @@
+Main Developers to the main project:
+
+* Dolu1990: (Code guru, concepts, some 3D models)
+* Svein Ove Aas, aka. Baughn: (Code, some 3D models, concepts)
+* cm0x4D: (Sound engineer, code and 3D models/texturing, concepts)
+* lambdaShade: (3D models/texturing/graphics maestro, concepts, some sounds and lines of code)
+* metc: (Website/Wiki webmaster)
+
+Code/models:
+
+* bloxgate: (some tweaks)
+* DrummerMC: (bug fix)
+* ltouroumov: (bug fix)
+* meelock: (typo fix)
+* Sukasa: (code enhancement)
+* DrummingFish: (GUI text parsing, cleaning/refactoring, some tweaks)

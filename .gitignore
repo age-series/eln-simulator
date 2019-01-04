@@ -1,0 +1,16 @@
+bin
+/build
+eclipse
+/logs
+/config
+/saves
+/classes
+/src-out
+/out
+
+# IntelliJ
+.idea
+*.iml
+*.ipr
+*.iws
+
