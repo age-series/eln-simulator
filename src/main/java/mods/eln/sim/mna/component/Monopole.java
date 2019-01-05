@@ -17,4 +17,9 @@ public abstract class Monopole extends Component {
     public State[] getConnectedStates() {
         return new State[]{pin};
     }
+
+    @Override
+    public String toString() {
+        return "[" + pin + " M]";
+    }
 }

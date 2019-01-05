@@ -2,16 +2,21 @@ package mods.eln.sim.mna.component;
 
 import mods.eln.sim.mna.RootSystem;
 import mods.eln.sim.mna.SubSystem;
+import mods.eln.sim.mna.iface.IAbstractor;
 import mods.eln.sim.mna.state.State;
 
 public abstract class Component {
 
+    String name;
     SubSystem subSystem;
-
     public IAbstractor abstractedBy;
 
     public Component() {
-        //System.out.println("new " + this);
+        name = "";
+    }
+
+    public Component(String name) {
+        this.name = name;
     }
 
     public void addedTo(SubSystem s) {
@@ -58,5 +63,14 @@ public abstract class Component {
     }
 
     public void onRemovefromRootSystem() {
+    }
+
+    public Component setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getName() {
+        return name;
     }
 }

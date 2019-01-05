@@ -1,17 +1,16 @@
-package mods.eln.sim;
+package mods.eln.sim.mna.state;
 
 import mods.eln.sim.mna.component.Bipole;
 import mods.eln.sim.mna.component.Component;
+import mods.eln.sim.mna.component.ElectricalConnection;
 import mods.eln.sim.mna.component.Line;
-import mods.eln.sim.mna.misc.MnaConst;
-import mods.eln.sim.mna.state.State;
-import mods.eln.sim.mna.state.VoltageStateLineReady;
+import mods.eln.sim.mna.MnaConst;
 
 public class ElectricalLoad extends VoltageStateLineReady {
 
     public static final State groundLoad = null;
 
-    private double Rs = MnaConst.highImpedance;
+    private double Rs = MnaConst.HIGH_IMPEDANCE;
 
     public ElectricalLoad() {
     }
@@ -34,7 +33,7 @@ public class ElectricalLoad extends VoltageStateLineReady {
     }
 
     public void highImpedance() {
-        setRs(MnaConst.highImpedance);
+        setRs(MnaConst.HIGH_IMPEDANCE);
     }
 //	ArrayList<ElectricalConnection> electricalConnections = new ArrayList<ElectricalConnection>(4);
 

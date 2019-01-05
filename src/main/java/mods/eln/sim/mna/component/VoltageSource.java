@@ -1,15 +1,16 @@
 package mods.eln.sim.mna.component;
 
+import mods.eln.common.Units;
 import mods.eln.sim.mna.SubSystem;
-import mods.eln.sim.mna.misc.ISubSystemProcessI;
+import mods.eln.sim.mna.iface.ISubSystemProcessI;
 import mods.eln.sim.mna.state.CurrentState;
 import mods.eln.sim.mna.state.State;
 
 public class VoltageSource extends Bipole implements ISubSystemProcessI {
 
-    String name;
-
+    // voltage of the source
     double u = 0;
+    // ???
     private CurrentState currentState = new CurrentState();
 
     public VoltageSource(String name) {
@@ -26,8 +27,20 @@ public class VoltageSource extends Bipole implements ISubSystemProcessI {
         return this;
     }
 
+    public CurrentState getCurrentState() {
+        return currentState;
+    }
+
+    public double getP() {
+        return getU() * getI();
+    }
+
     public double getU() {
         return u;
+    }
+
+    public double getI() {
+        return -getCurrentState().state;
     }
 
     @Override
@@ -57,20 +70,16 @@ public class VoltageSource extends Bipole implements ISubSystemProcessI {
         s.addToI(getCurrentState(), u);
     }
 
-    public double getI() {
-        return -getCurrentState().state;
-    }
-
     @Override
     public double getCurrent() {
         return -getCurrentState().state;
     }
 
-    public CurrentState getCurrentState() {
-        return currentState;
-    }
-
-    public double getP() {
-        return getU() * getI();
+    public String toString() {
+        if (bPin != null) {
+            return "[" + aPin + " V(" + Units.volts(u) + ") " + bPin + "]";
+        }else{
+            return "[" + aPin + " V(" + Units.volts(u) + ")]";
+        }
     }
 }

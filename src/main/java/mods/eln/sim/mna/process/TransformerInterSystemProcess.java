@@ -1,7 +1,7 @@
 package mods.eln.sim.mna.process;
 
 import mods.eln.sim.mna.component.VoltageSource;
-import mods.eln.sim.mna.misc.IRootSystemPreStepProcess;
+import mods.eln.sim.mna.iface.IRootSystemPreStepProcess;
 import mods.eln.sim.mna.state.State;
 
 public class TransformerInterSystemProcess implements IRootSystemPreStepProcess {

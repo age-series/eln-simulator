@@ -3,7 +3,7 @@ package mods.eln.sim.mna.state;
 import mods.eln.sim.mna.RootSystem;
 import mods.eln.sim.mna.SubSystem;
 import mods.eln.sim.mna.component.Component;
-import mods.eln.sim.mna.component.IAbstractor;
+import mods.eln.sim.mna.iface.IAbstractor;
 
 import java.util.ArrayList;
 
@@ -96,5 +96,9 @@ public class State {
 
     public boolean isNotSimulated() {
         return subSystem == null && abstractedBy == null;
+    }
+
+    public String toString() {
+        return Integer.toString(id);
     }
 }

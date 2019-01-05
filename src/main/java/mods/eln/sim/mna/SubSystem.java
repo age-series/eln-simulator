@@ -1,15 +1,15 @@
 package mods.eln.sim.mna;
 
+import mods.eln.common.Units;
 import mods.eln.debug.Profiler;
-import mods.eln.sim.mna.component.Component;
-import mods.eln.sim.mna.component.Delay;
-import mods.eln.sim.mna.component.Resistor;
-import mods.eln.sim.mna.component.VoltageSource;
-import mods.eln.sim.mna.misc.IDestructor;
-import mods.eln.sim.mna.misc.ISubSystemProcessFlush;
-import mods.eln.sim.mna.misc.ISubSystemProcessI;
+import mods.eln.sim.mna.component.*;
+import mods.eln.sim.mna.iface.IDestructor;
+import mods.eln.sim.mna.iface.ISubSystemProcessFlush;
+import mods.eln.sim.mna.iface.ISubSystemProcessI;
 import mods.eln.sim.mna.state.State;
 import mods.eln.sim.mna.state.VoltageState;
+
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.QRDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * SubSystem
+ *
+ * This class contains a single circuit matrix, and the tools to tick said matrix as a function of time.
+ */
 public class SubSystem {
     public ArrayList<Component> component = new ArrayList<Component>();
     public List<State> states = new ArrayList<State>();
@@ -25,25 +30,20 @@ public class SubSystem {
     public ArrayList<SubSystem> interSystemConnectivity = new ArrayList<SubSystem>();
     ArrayList<ISubSystemProcessI> processI = new ArrayList<ISubSystemProcessI>();
     State[] statesTab;
-
     RootSystem root;
-
     double dt;
     boolean matrixValid = false;
-
     int stateCount;
     RealMatrix A;
     //RealMatrix I;
     boolean singularMatrix;
-
     double[][] AInvdata;
     double[] Idata;
-
     double[] XtempData;
-
     boolean breaked = false;
-
     ArrayList<ISubSystemProcessFlush> processF = new ArrayList<ISubSystemProcessFlush>();
+
+
 
     public RootSystem getRoot() {
         return root;
@@ -113,8 +113,6 @@ public class SubSystem {
         processI.add(p);
     }
 
-    //double[][] getDataRef()
-
     public void generateMatrix() {
         stateCount = states.size();
 
@@ -144,10 +142,12 @@ public class SubSystem {
 
         try {
             //FieldLUDecomposition QRDecomposition  LUDecomposition RRQRDecomposition
+            printMatrix(A);
             RealMatrix Ainv = new QRDecomposition(A).getSolver().getInverse();
             AInvdata = Ainv.getData();
             singularMatrix = false;
         } catch (Exception e) {
+            e.printStackTrace();
             singularMatrix = true;
             if (stateCount > 1) {
                 int idx = 0;
@@ -177,17 +177,6 @@ public class SubSystem {
         Idata[s.getId()] = v;
         //Idata[s.getId()][0] += v;
     }
-
-	/*
-	 * public void pushX(){
-	 * 
-	 * }
-	 */
-	/*
-	 * public void popX(){
-	 * 
-	 * }
-	 */
 
     public void step() {
         stepCalc();
@@ -222,7 +211,7 @@ public class SubSystem {
             //Xtemp = Ainv.multiply(I);
         }
         profiler.stop();
-        //Utils.println(profiler);
+        //System.out.println(profiler);
     }
 
     public double solve(State pin) {
@@ -249,7 +238,6 @@ public class SubSystem {
         return 0;
     }
 
-    //RealMatrix Xtemp;
     public void stepFlush() {
         if (!singularMatrix) {
             for (int idx = 0; idx < stateCount; idx++) {
@@ -284,7 +272,7 @@ public class SubSystem {
 //
 //		s.step();
 //		s.step();
-
+        /*
         SubSystem s = new SubSystem(null, 0.1);
         VoltageState n1, n2, n3, n4, n5;
         VoltageSource u1;
@@ -297,23 +285,44 @@ public class SubSystem {
         //	s.addState(n4 = new VoltageState());
         //	s.addState(n5 = new VoltageState());
 
-        s.addComponent((u1 = new VoltageSource("")).setU(1).connectTo(n1, null));
+        s.addComponent((u1 = new VoltageSource("")).setU(1).connectTo(n1, n2));
 
         s.addComponent((r1 = new Resistor()).setR(10).connectTo(n1, n2));
-        s.addComponent((d1 = new Delay()).set(1).connectTo(n2, n3));
-        s.addComponent((r2 = new Resistor()).setR(10).connectTo(n3, null));
+        s.addComponent((r2 = new Resistor()).setR(10).connectTo(n2, n3));
         //s.addComponent((d2 = new Delay()).set(10).connectTo(n4, n5));
         //s.addComponent((r2 = new Resistor()).setR(10).connectTo(n5, null));
+        */
 
-        for (int idx = 0; idx < 100; idx++) {
-            s.step();
-        }
+        SubSystem s = new SubSystem(null, 0.1);
 
-        System.out.println("END");
+        VoltageState s1, s2, s3;
+        VoltageSource v1, v2;
+        Resistor r1, r2;
+        Inductor i1;
 
+        s.addState(s1 = new VoltageState());
+        s.addState(s2 = new VoltageState());
+        //s.addState(s3 = new VoltageState());
+
+        s.addComponent((v1 = new VoltageSource("")).setU(5).connectTo(s1, null));
+        //s.addComponent((v2 = new VoltageSource("")).setU(0).connectTo(s2, null));
+
+        //s.addComponent(i1 = new Inductor("I1", 1.0f, s1, s2));
+        s.addComponent(r1 = new Resistor(10, s1, s2));
+        //s.addComponent(r2 = new Resistor(30, s2, s3));
+
+        //for (int idx = 0; idx < 100; idx++) {
+        //    s.step();
+        //}
+
+        //s.step();
+        //s.step();
         s.step();
-        s.step();
-        s.step();
+        System.out.println(s);
+        System.out.println("R1: " + Units.amps(r1.getCurrent()));
+        System.out.println("0: " + Units.volts(s1.state));
+        System.out.println("1: " + Units.volts(s2.state));
+
     }
 
     public boolean containe(State state) {
@@ -407,5 +416,23 @@ public class SubSystem {
         th.R = Rth;
         th.U = Uth;
         return th;
+    }
+
+    public String toString() {
+        String str = "";
+        for (Component c: component) {
+            if (c != null)
+                str += c.toString();
+        }
+        return str;
+    }
+
+    public void printMatrix(RealMatrix matrix) {
+        for (double[] x: matrix.getData()) {
+            for (double y: x) {
+                System.out.print(y + ", ");
+            }
+            System.out.println();
+        }
     }
 }

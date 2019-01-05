@@ -1,7 +1,7 @@
 package mods.eln.sim.mna.component;
 
 import mods.eln.sim.mna.SubSystem;
-import mods.eln.sim.mna.misc.MnaConst;
+import mods.eln.sim.mna.MnaConst;
 import mods.eln.sim.mna.state.CurrentState;
 import mods.eln.sim.mna.state.State;
 
@@ -27,7 +27,7 @@ public class Transformer extends Bipole {
         return ratio;
     }
 
-    private double r = MnaConst.highImpedance, rInv = 1 / MnaConst.highImpedance;
+    private double r = MnaConst.HIGH_IMPEDANCE, rInv = 1 / MnaConst.HIGH_IMPEDANCE;
 
     @Override
     public void quitSubSystem() {

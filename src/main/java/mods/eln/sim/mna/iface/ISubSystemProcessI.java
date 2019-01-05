@@ -1,4 +1,4 @@
-package mods.eln.sim.mna.misc;
+package mods.eln.sim.mna.iface;
 
 import mods.eln.sim.mna.SubSystem;
 

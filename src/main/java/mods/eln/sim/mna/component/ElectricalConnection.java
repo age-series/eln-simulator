@@ -1,6 +1,6 @@
-package mods.eln.sim;
+package mods.eln.sim.mna.component;
 
-import mods.eln.sim.mna.component.InterSystem;
+import mods.eln.sim.mna.state.ElectricalLoad;
 
 public class ElectricalConnection extends InterSystem {
 

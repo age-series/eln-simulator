@@ -1,7 +1,7 @@
 package mods.eln.sim.mna.component;
 
 import mods.eln.sim.mna.SubSystem;
-import mods.eln.sim.mna.misc.ISubSystemProcessI;
+import mods.eln.sim.mna.iface.ISubSystemProcessI;
 import mods.eln.sim.mna.state.State;
 
 public class Capacitor extends Bipole implements ISubSystemProcessI {

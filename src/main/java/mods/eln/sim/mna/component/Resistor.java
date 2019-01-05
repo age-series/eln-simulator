@@ -1,51 +1,103 @@
 package mods.eln.sim.mna.component;
 
+import mods.eln.common.Units;
 import mods.eln.sim.mna.SubSystem;
-import mods.eln.sim.mna.misc.MnaConst;
+import mods.eln.sim.mna.MnaConst;
 import mods.eln.sim.mna.state.State;
 
+/**
+ * Resistor: A two terminal device with resistance
+ */
 public class Resistor extends Bipole {
+    // r: the resistance of the resistor. rInv: the inverse of the resistance of the resistor.
+    private double r = MnaConst.HIGH_IMPEDANCE, rInv = 1 / MnaConst.HIGH_IMPEDANCE;
 
-    public Resistor() {
-    }
+    public Resistor() {}
 
+    /**
+     * Basic Resistor with default of HIGH_IMPEDANCE.
+     *
+     * @param aPin pin of the resistor
+     * @param bPin pin of the resistor
+     */
     public Resistor(State aPin, State bPin) {
         super(aPin, bPin);
     }
 
-    //public SubSystem interSystemA, interSystemB;
+    /**
+     * Basic resistor
+     *
+     * @param resistance resistance of the resistor, in ohms
+     * @param aPin pin of the resistor
+     * @param bPin pin of the resistor
+     */
+    public Resistor(double resistance, State aPin, State bPin) {
+        super(aPin, bPin);
+        setR(resistance);
+    }
 
-/*	public Line line = null;
-    public boolean lineReversDir;
-	public boolean isInLine() {
-		
-		return line != null;
-	}*/
+    /**
+     * Basic Resistor with default of HIGH_IMPEDANCE.
+     *
+     * @param name name of the resistor
+     * @param aPin pin of the resistor
+     * @param bPin pin of the resistor
+     */
+    public Resistor(String name, State aPin, State bPin) {
+        super(name, aPin, bPin);
+    }
 
-    private double r = MnaConst.highImpedance, rInv = 1 / MnaConst.highImpedance;
-
-    //public boolean usedAsInterSystem = false;
+    public Resistor(String name, double resistance, State aPin, State bPin) {
+        super(name, aPin, bPin);
+        setR(resistance);
+    }
 
     public double getRInv() {
         return rInv;
     }
 
+    /**
+     * getR: Get the resistance value of the resistor, in ohms
+     *
+     * @return resistance of the resistor, in ohms
+     */
     public double getR() {
         return r;
     }
 
+    /**
+     * getI: Get the amperage drawn through the resistor, in amps
+     *
+     * @return amps drawn through the resistor
+     */
     public double getI() {
         return getCurrent();
     }
 
+    /**
+     * getP: Get the power across the resistor, in watts
+     *
+     * @return power across resistor
+     */
     public double getP() {
         return getU() * getCurrent();
     }
 
+    /**
+     * getU: Get the voltage drop across the resistor, in volts
+     *
+     * @return voltage drop across resistor
+     */
     public double getU() {
         return (aPin == null ? 0 : aPin.state) - (bPin == null ? 0 : bPin.state);
     }
 
+    /**
+     * setR: set the resistance across the resistor, in ohms
+     *
+     * @param r resistance, in ohms
+     * @return this Resistor instance
+     */
     public Resistor setR(double r) {
         if (this.r != r) {
             this.r = r;
@@ -55,33 +107,35 @@ public class Resistor extends Bipole {
         return this;
     }
 
-    public void highImpedance() {
-        setR(MnaConst.highImpedance);
-    }
-
-    public void ultraImpedance() {
-        setR(MnaConst.ultraImpedance);
-    }
-
-    public Resistor pullDown() {
-        setR(MnaConst.pullDown);
+    /**
+     * highImpedance: Set the resistance to HIGH_IMPEDANCE
+     *
+     * @return this Resistor instance
+     */
+    public Resistor highImpedance() {
+        setR(MnaConst.HIGH_IMPEDANCE);
         return this;
     }
-	
-	/*@Override
-	public void dirty() {
-		if (line != null) {
-			line.recalculateR();
-		}
-		if (usedAsInterSystem) {
-			aPin.getSubSystem().breakSystem();
-			if (aPin.getSubSystem() != bPin.getSubSystem()) {
-				bPin.getSubSystem().breakSystem();
-			}
-		}
-		
-		super.dirty();
-	}*/
+
+    /**
+     * ultraImpedance: Set the resistance to ULTRA_IMPEDANCE
+     *
+     * @return this Resistor instance
+     */
+    public Resistor ultraImpedance() {
+        setR(MnaConst.ULTRA_IMPEDANCE);
+        return this;
+    }
+
+    /**
+     * pullDown: set the resistance to PULL_DOWN
+     *
+     * @return this Resistor instance
+     */
+    public Resistor pullDown() {
+        setR(MnaConst.PULL_DOWN);
+        return this;
+    }
 
     boolean canBridge() {
         return false;
@@ -98,11 +152,10 @@ public class Resistor extends Bipole {
     @Override
     public double getCurrent() {
         return getU() * rInv;
-		/*if(line == null)
-			return getU() * rInv;
-		else if (lineReversDir)
-			return -line.getCurrent();
-		else
-			return line.getCurrent();*/
+    }
+
+    @Override
+    public String toString() {
+        return "[" + aPin + " R(" + Units.ohms(r) + ") " + bPin + "]";
     }
 }

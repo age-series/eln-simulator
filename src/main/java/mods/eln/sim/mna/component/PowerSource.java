@@ -1,7 +1,7 @@
 package mods.eln.sim.mna.component;
 
 import mods.eln.sim.mna.SubSystem;
-import mods.eln.sim.mna.misc.IRootSystemPreStepProcess;
+import mods.eln.sim.mna.iface.IRootSystemPreStepProcess;
 import mods.eln.sim.mna.state.State;
 
 public class PowerSource extends VoltageSource implements IRootSystemPreStepProcess {

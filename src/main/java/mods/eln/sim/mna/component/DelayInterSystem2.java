@@ -1,6 +1,6 @@
 package mods.eln.sim.mna.component;
 
-import mods.eln.sim.mna.misc.IRootSystemPreStepProcess;
+import mods.eln.sim.mna.iface.IRootSystemPreStepProcess;
 
 public class DelayInterSystem2 extends VoltageSource {
 
